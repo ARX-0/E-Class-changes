@@ -1,0 +1,32 @@
+--- a/hw/Makefile
++++ b/hw/Makefile
+@@ -52,6 +52,9 @@
+ else ifeq ($(BOARD), ac701)
+ 	FPGA:=xc7a200tfbg676-2
+ 	MCS:=true
++else ifeq ($(BOARD), ac701_eclass)
++	FPGA:=xc7a200tfbg676-2
++	MCS:=true
+ else ifeq ($(BOARD), zcu106)
+ 	FPGA:=xczu7ev-ffvc1156-2-e
+ 	MCS:=false
+@@ -71,9 +74,19 @@
+ 
+ MOREDEFINES=$(addprefix -D , $(BSC_DEFINES))
+ 
++# Core selection: CORE=cclass (default: ganga 64 / yamuna 32) or CORE=eclass (32-bit E-class, see eclass.mk)
++CORE ?= cclass
++ifeq ($(CORE), eclass)
++include eclass.mk
++endif
++
+ # ------------------------------------- Makefile TARGETS ----------------------------------------- #
+ default: quick_build_xilinx
++ifeq ($(CORE), eclass)
++build:  build_eclass
++else
+ build:  quick_build
++endif
+ build_sim: quick_build_sim
+ build_sim_gdb: quick_build_sim_gdb
+ build_vcs_sim: gen_sim_vcs_files

@@ -1,0 +1,5 @@
+logs/
+build_eclass/
+fpga_project_eclass/
+*.jou
+*.log

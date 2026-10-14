@@ -1,0 +1,34 @@
+--- a/base-sim/Makefile
++++ b/base-sim/Makefile
+@@ -131,7 +131,7 @@
+ # ----------------------------------------------------------------------------------------------- #
+ 
+ # ----------------- Setting up flags for verilator ---------------------------------------------- #
+-VERILATOR_FLAGS += --stats -O3 $(verilate_fast) -LDFLAGS "-static" --x-assign fast \
++VERILATOR_FLAGS += --stats --no-timing -O3 $(verilate_fast) -LDFLAGS "-static" --x-assign fast \
+ 									 --x-initial fast --noassert sim_main.cpp --bbox-sys -Wno-STMTDLY \
+ 									 -Wno-UNOPTFLAT -Wno-WIDTH -Wno-lint -Wno-COMBDLY -Wno-INITIALDLY \
+ 									 --autoflush $(coverage) $(trace) --threads $(THREADS) \
+@@ -140,21 +140,13 @@
+ 
+ # ---------------- Setting the variables for bluespec compile  --------------------------------- #
+ BSC_CMD:= bsc -u -verilog -elab 
+-BSVCOMPILEOPTS:= +RTS -K40000M -RTS -check-assert  -keep-fires -opt-undetermined-vals \
++BSVCOMPILEOPTS:= +RTS -K4000M -RTS -check-assert  -keep-fires -opt-undetermined-vals \
+ 								 -remove-false-rules -remove-empty-rules -remove-starved-rules -remove-dollar \
+ 								 -suppress-warnings G0020 -show-schedule -show-module-use
+ BSVLINKOPTS:=-parallel-sim-link 8 -keep-fires
+ VERILOGDIR:=./verilog/
+ BSVBUILDDIR:=./bsv_build/
+ BSVOUTDIR:=./bin
+-ifeq (, $(wildcard ${TOOLS_DIR}/shakti-tools/insert_license.sh))
+-  VERILOG_FILTER:= -verilog-filter ${BLUESPECDIR}/bin/basicinout
+-else
+-  VERILOG_FILTER:= -verilog-filter ${BLUESPECDIR}/bin/basicinout \
+-									 -verilog-filter ${TOOLS_DIR}/shakti-tools/insert_license.sh \
+-									 -verilog-filter ./rename_translate.sh
+-	VERILOGLICENSE:= cp ${TOOLS_DIR}/shakti-tools/IITM_LICENSE.txt ${VERILOGDIR}/LICENSE.txt
+-endif
+ # ----------------------------------------------------------------------------------------------- #
+ 
+ # ------------------------------------- Makefile TARGETS ---------------------------------------- #
