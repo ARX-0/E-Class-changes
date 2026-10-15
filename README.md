@@ -34,7 +34,6 @@ E-class `master` (`1.10.2`) does not build or run with current tools:
 ```
 
 ## Result
-- 63/63 RV32IMAC ISA tests pass (trace matches Spike)
 - `Hello, World!` prints and exits
 
 GC2025 E-class 32: `make build CORE=eclass BOARD=ac701_eclass XLEN_build=32` ([gc2025/](gc2025/), [scripts/](scripts/)) · full notes: [archived/README.md](archived/README.md)
